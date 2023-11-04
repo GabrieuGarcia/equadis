@@ -1,9 +1,11 @@
 package com.equadis.mscustomer.service;
 
 import com.equadis.mscustomer.model.Customer;
-import com.equadis.mscustomer.repositories.CustomerRepository;
+import com.equadis.mscustomer.repository.CustomerRepository;
 import com.equadis.mscustomer.utils.CustomerConverter;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -18,5 +20,11 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer save(Customer customer) {
         var customerSaved = this.repository.save(CustomerConverter.modelToEntity(customer));
         return CustomerConverter.entityToModel(customerSaved);
+    }
+
+    @Override
+    public Customer findById(UUID customerId) {
+        var customer = this.repository.findById(customerId).get();
+        return CustomerConverter.entityToModel(customer);
     }
 }

@@ -1,9 +1,10 @@
 package com.equadis.mscustomer.enpoint;
 
-import com.equadis.mscustomer.dtos.CustomerRecordDto;
+import com.equadis.mscustomer.dto.CustomerRecordDto;
 import com.equadis.mscustomer.model.Customer;
 import com.equadis.mscustomer.service.CustomerService;
 import com.equadis.mscustomer.utils.CustomerConverter;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,10 @@ public class CustomerEndpoint {
 
 
     @PostMapping("/save")
-    private ResponseEntity<Customer> save(@RequestBody CustomerRecordDto customerRecordDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.customerService.save(CustomerConverter.dtoToModel(customerRecordDto)));
+    private ResponseEntity<CustomerRecordDto> save(@RequestBody @Valid CustomerRecordDto customerRecordDto) {
+
+        var response = this.customerService.save(CustomerConverter.dtoToModel(customerRecordDto));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(CustomerConverter.modelToDto(response));
     }
 }
