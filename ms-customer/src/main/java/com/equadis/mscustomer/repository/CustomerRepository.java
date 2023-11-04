@@ -1,6 +1,6 @@
-package com.equadis.mscustomer.repositories;
+package com.equadis.mscustomer.repository;
 
-import com.equadis.mscustomer.entities.ECustomer;
+import com.equadis.mscustomer.entity.ECustomer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

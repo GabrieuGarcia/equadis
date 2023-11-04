@@ -1,4 +1,4 @@
-package com.equadis.mscustomer.entities;
+package com.equadis.mscustomer.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
