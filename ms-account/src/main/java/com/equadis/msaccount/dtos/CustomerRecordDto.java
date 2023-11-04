@@ -1,4 +1,4 @@
-package com.equadis.mscustomer.dto;
+package com.equadis.msaccount.dtos;
 
 import java.util.UUID;
 
