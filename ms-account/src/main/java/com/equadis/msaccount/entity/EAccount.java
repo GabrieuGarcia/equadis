@@ -22,7 +22,7 @@ public class EAccount {
     @Column(name = "ACCOUNT_AMOUNT")
     private BigDecimal accountAmount;
 
-    @ManyToMany
+    @OneToMany
     private List<ETransaction> transactions;
 
 }

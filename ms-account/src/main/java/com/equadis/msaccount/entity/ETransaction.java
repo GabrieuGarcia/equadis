@@ -1,5 +1,6 @@
 package com.equadis.msaccount.entity;
 
+import com.equadis.msaccount.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,14 +18,18 @@ public class ETransaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID transactionId;
 
-
-    @ManyToMany(mappedBy = "transactions")
-    private List<EAccount> accounts;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
+    private EAccount account;
 
     @Column(name = "TRANSACTION_AMOUNT")
     private BigDecimal transactionAmount;
 
     @Column(name = "TRANSACTION_DATE")
     private Date transactionDate;
+
+    @Column(name = "TRANSACTION_TYPE")
+    private TransactionType transactionType;
+
 
 }

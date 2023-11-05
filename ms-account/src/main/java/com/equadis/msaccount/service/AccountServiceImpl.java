@@ -4,8 +4,13 @@ import com.equadis.msaccount.exceptions.AccountException;
 import com.equadis.msaccount.model.Account;
 import com.equadis.msaccount.producer.AccountProducer;
 import com.equadis.msaccount.repository.AccountRepository;
+import com.equadis.msaccount.utils.AccountConstants;
+import com.equadis.msaccount.utils.AccountConverter;
+import com.equadis.msaccount.validator.AccountValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -21,21 +26,30 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public Account save(Account account) throws AccountException {
-
-        Object obj = this.accountProducer.publishMessageCustomerValidation(account);
-
-        System.out.println(obj);
-
-        /*
+        this.getAndSetAccountCustomer(account);
 
         AccountValidator.creation(account);
-
         var accountSaved = this.repository.save(AccountConverter.modelToEntity(account));
 
         return AccountConverter.entityToModel(accountSaved);
+    }
 
-         */
+    @Override
+    public Account findById(UUID accountId) {
+        return AccountConverter.entityToModel(this.repository.findById(accountId).get());
+    }
 
-        return null;
+    private void getAndSetAccountCustomer(Account account) throws AccountException {
+        if(account.getCustomerId() == null) {
+            return;
+        }
+
+        try {
+            //Calls MS-Customer
+            var customer =  this.accountProducer.publishMessageCustomerValidation(account);
+            account.setCustomerId(customer == null ? null : customer.getCustomerId());
+        } catch (Exception e) {
+            throw new AccountException(AccountConstants.MSG_NOT_RECEIVE_CUSTOMER);
+        }
     }
 }
