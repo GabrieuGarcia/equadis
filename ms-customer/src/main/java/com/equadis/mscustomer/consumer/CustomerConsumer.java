@@ -2,6 +2,7 @@ package com.equadis.mscustomer.consumer;
 
 import com.equadis.mscustomer.dto.AccountingMessageDto;
 import com.equadis.mscustomer.dto.CustomerRecordDto;
+import com.equadis.mscustomer.model.Customer;
 import com.equadis.mscustomer.service.CustomerService;
 import com.equadis.mscustomer.utils.CustomerConverter;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -19,7 +20,7 @@ public class CustomerConsumer {
 
     @RabbitListener(queues = "${broker.queue.account.customer}")
     public Object listenAccountQueue(@Payload AccountingMessageDto dto) {
-       return this.customerService.findById(dto.getCustomerId());
+        return this.customerService.findById(dto.getCustomerId());
     }
 
 }
