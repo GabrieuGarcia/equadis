@@ -1,10 +1,7 @@
 package com.equadis.mscustomer.consumer;
 
 import com.equadis.mscustomer.dto.AccountingMessageDto;
-import com.equadis.mscustomer.dto.CustomerRecordDto;
-import com.equadis.mscustomer.model.Customer;
 import com.equadis.mscustomer.service.CustomerService;
-import com.equadis.mscustomer.utils.CustomerConverter;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;

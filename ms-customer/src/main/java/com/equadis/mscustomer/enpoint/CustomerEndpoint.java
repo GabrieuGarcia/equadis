@@ -1,7 +1,6 @@
 package com.equadis.mscustomer.enpoint;
 
 import com.equadis.mscustomer.dto.CustomerRecordDto;
-import com.equadis.mscustomer.model.Customer;
 import com.equadis.mscustomer.service.CustomerService;
 import com.equadis.mscustomer.utils.CustomerConverter;
 import jakarta.validation.Valid;
