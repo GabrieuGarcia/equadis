@@ -24,9 +24,9 @@ public class AccountEndpoint {
     @PostMapping("/save")
     public ResponseEntity<AccountRecordDto> save(@RequestBody AccountRecordDto accountRecordDto) throws AccountException {
 
-        var response = this.accountService.save(AccountConverter.dtoToModel(accountRecordDto));
+        var response = this.accountService.save(AccountConverter.recordDtoToModel(accountRecordDto));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(AccountConverter.modelToDto(response));
+        return ResponseEntity.status(HttpStatus.CREATED).body(AccountConverter.modelToRecordDto(response));
     }
 
 }

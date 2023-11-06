@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TransactionConverter {
 
-    public static Transaction dtoToModel(TransactionRecordDTO dto) {
+    public static Transaction recordDtoToModel(TransactionRecordDTO dto) {
         if (dto == null) {
             return null;
         }
@@ -20,8 +20,23 @@ public class TransactionConverter {
         BeanUtils.copyProperties(dto, model);
 
         //Add other Objects
-        model.setAccount(AccountConverter.dtoToModel(dto.account()));
+        model.setAccount(AccountConverter.recordDtoToModel(dto.account()));
         return model;
+    }
+
+    public static TransactionRecordDTO modelToRecordDto(Transaction model) {
+        if (model == null) {
+            return null;
+        }
+
+        var dto = new TransactionRecordDTO(
+                model.getTransactionId(),
+                AccountConverter.modelToRecordDto(model.getAccount()),
+                model.getTransactionAmount(),
+                model.getTransactionDate(),
+                model.getTransactionType());
+
+        return dto;
     }
 
     public static TransactionDTO modelToDto(Transaction model) {
@@ -33,7 +48,7 @@ public class TransactionConverter {
         BeanUtils.copyProperties(model, dto);
 
         //Add other Objects
-        dto.setAccount(AccountConverter.modelToDto(model.getAccount()));
+        dto.setAccount(AccountConverter.modelToRecordDto(model.getAccount()));
         return dto;
     }
 
@@ -49,7 +64,7 @@ public class TransactionConverter {
             BeanUtils.copyProperties(model, dto);
 
             //Add other Objects
-            dto.setAccount(AccountConverter.modelToDto(model.getAccount()));
+            dto.setAccount(AccountConverter.modelToRecordDto(model.getAccount()));
             dtos.add(dto);
         });
 

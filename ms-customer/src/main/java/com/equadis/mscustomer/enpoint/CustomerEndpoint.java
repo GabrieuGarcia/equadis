@@ -24,7 +24,7 @@ public class CustomerEndpoint {
 
 
     @PostMapping("/save")
-    private ResponseEntity<CustomerRecordDto> save(@RequestBody @Valid CustomerRecordDto customerRecordDto) {
+    public ResponseEntity<CustomerRecordDto> save(@RequestBody @Valid CustomerRecordDto customerRecordDto) {
 
         var response = this.customerService.save(CustomerConverter.dtoToModel(customerRecordDto));
 

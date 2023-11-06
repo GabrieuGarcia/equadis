@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 
 public class AccountConverter {
 
-    public static Account dtoToModel(AccountRecordDto dto) {
+    public static Account recordDtoToModel(AccountRecordDto dto) {
         if(dto == null) {
             return null;
         }
@@ -17,7 +17,7 @@ public class AccountConverter {
         return model;
     }
 
-    public static AccountRecordDto modelToDto(Account model) {
+    public static AccountRecordDto modelToRecordDto(Account model) {
         if(model == null) {
             return null;
         }

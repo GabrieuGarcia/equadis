@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +28,7 @@ public class TransactionEndpoint {
     @PostMapping("/deposit")
     public ResponseEntity<TransactionDTO> deposit(@RequestBody TransactionRecordDTO dto) throws TransactiontException, AccountException, ParseException {
 
-        var response = this.transactionService.deposit(TransactionConverter.dtoToModel(dto));
+        var response = this.transactionService.deposit(TransactionConverter.recordDtoToModel(dto));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(TransactionConverter.modelToDto(response));
     }
@@ -38,7 +36,7 @@ public class TransactionEndpoint {
     @PostMapping("/withdraw")
     public ResponseEntity<TransactionDTO> withdraw(@RequestBody TransactionRecordDTO dto) throws TransactiontException, AccountException, ParseException {
 
-        var response = this.transactionService.withdraw(TransactionConverter.dtoToModel(dto));
+        var response = this.transactionService.withdraw(TransactionConverter.recordDtoToModel(dto));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(TransactionConverter.modelToDto(response));
     }
