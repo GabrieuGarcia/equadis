@@ -6,12 +6,16 @@ import com.equadis.msaccount.exceptions.TransactiontException;
 import com.equadis.msaccount.model.Transaction;
 import com.equadis.msaccount.repository.TransactionRepository;
 import com.equadis.msaccount.utils.TransactionConverter;
+import com.equadis.msaccount.utils.Utils;
 import com.equadis.msaccount.validator.TransactionValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -28,7 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Transaction deposit(Transaction transaction) throws TransactiontException, AccountException {
+    public Transaction deposit(Transaction transaction) throws TransactiontException, AccountException, ParseException {
 
         this.buildDeposit(transaction);
 
@@ -43,7 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Transaction withdraw(Transaction transaction) throws TransactiontException, AccountException {
+    public Transaction withdraw(Transaction transaction) throws TransactiontException, AccountException, ParseException {
         this.buildWithdraw(transaction);
         TransactionValidator.withdrawValidations(transaction);
 
@@ -60,16 +64,36 @@ public class TransactionServiceImpl implements TransactionService {
         return TransactionConverter.entityToModel(response);
     }
 
-    private void buildDeposit(Transaction transaction) {
-        this.getAndSetTransactionAccount(transaction);
-        transaction.setTransactionDate(new Date());
-        transaction.setTransactionType(TransactionType.DEPOSIT);
+    @Override
+    public List<Transaction> findAll() {
+        return TransactionConverter.entitiesToModels(this.transactionRepository.findAll());
     }
 
-    private void buildWithdraw(Transaction transaction) {
+    @Override
+    public List<Transaction> findTransactionsByAccountId(final UUID accountId) {
+        return TransactionConverter.entitiesToModels(this.transactionRepository.findAllByAccountAccountId(accountId));
+    }
+
+    @Override
+    public List<Transaction> findBetweenAmounts(final BigDecimal firstAmount, final BigDecimal SecondAmount) {
+        return TransactionConverter.entitiesToModels(this.transactionRepository.findBetweenAmounts(firstAmount,SecondAmount));
+    }
+
+    @Override
+    public List<Transaction> findBetweenDates(final Date firstDate, final Date secondDate) {
+        return TransactionConverter.entitiesToModels(this.transactionRepository.findBetweenDates(firstDate, secondDate));
+    }
+
+    private void buildDeposit(final Transaction transaction) throws ParseException {
         this.getAndSetTransactionAccount(transaction);
+        transaction.setTransactionType(TransactionType.DEPOSIT);
         transaction.setTransactionDate(new Date());
+    }
+
+    private void buildWithdraw(final Transaction transaction) throws ParseException {
+        this.getAndSetTransactionAccount(transaction);
         transaction.setTransactionType(TransactionType.WITHDRAW);
+        transaction.setTransactionDate(new Date());
 
         if(transaction.getTransactionAmount() != null) {
             transaction.getTransactionAmount().abs();

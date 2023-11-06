@@ -6,6 +6,9 @@ import com.equadis.msaccount.entity.ETransaction;
 import com.equadis.msaccount.model.Transaction;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TransactionConverter {
 
     public static Transaction dtoToModel(TransactionRecordDTO dto) {
@@ -34,6 +37,25 @@ public class TransactionConverter {
         return dto;
     }
 
+    public static List<TransactionDTO> modelsToDtos(List<Transaction> models) {
+        if (models == null || models.isEmpty()) {
+            return null;
+        }
+
+        List<TransactionDTO> dtos = new ArrayList<>();
+
+        models.forEach(model -> {
+            var dto = new TransactionDTO();
+            BeanUtils.copyProperties(model, dto);
+
+            //Add other Objects
+            dto.setAccount(AccountConverter.modelToDto(model.getAccount()));
+            dtos.add(dto);
+        });
+
+        return dtos;
+    }
+
     public static ETransaction modelToEntity(Transaction model) {
         if (model == null) {
             return null;
@@ -58,6 +80,25 @@ public class TransactionConverter {
         //Add other Objects
         model.setAccount(AccountConverter.entityToModel(entity.getAccount()));
         return model;
+    }
+
+    public static List<Transaction> entitiesToModels(List<ETransaction> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return null;
+        }
+
+        List<Transaction> models = new ArrayList<>();
+
+        entities.forEach(entity -> {
+            var model = new Transaction();
+            BeanUtils.copyProperties(entity, model);
+
+            //Add other Objects
+            model.setAccount(AccountConverter.entityToModel(entity.getAccount()));
+            models.add(model);
+        });
+
+        return models;
     }
 
 }

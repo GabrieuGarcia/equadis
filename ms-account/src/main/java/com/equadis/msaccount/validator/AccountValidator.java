@@ -24,7 +24,7 @@ public class AccountValidator {
     }
 
     private static void validateAmount(Account account, List<String> validations) {
-        if(account.getAccountAmount().compareTo(ZERO) <= 0) {
+        if(account.getAccountAmount().compareTo(ZERO) < 0) {
             validations.add(AccountConstants.MSG_BAD_AMOUNT);
         }
     }
